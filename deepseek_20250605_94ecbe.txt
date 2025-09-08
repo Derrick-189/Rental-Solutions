@@ -1,0 +1,46 @@
+uganda-hostels/
+├── assets/
+│   ├── css/
+│   │   ├── style.css
+│   │   └── bootstrap.min.css
+│   ├── js/
+│   │   ├── script.js
+│   │   ├── bootstrap.bundle.min.js
+│   │   └── google-maps.js
+│   └── images/
+│       ├── logo.png
+│       └── hostel-placeholder.jpg
+├── config/
+│   └── db.php
+├── includes/
+│   ├── header.php
+│   ├── footer.php
+│   ├── auth.php
+│   └── functions.php
+├── uploads/
+│   └── hostel_images/
+├── admin/
+│   ├── dashboard.php
+│   ├── users.php
+│   ├── hostels.php
+│   ├── payments.php
+│   └── messages.php
+├── landlord/
+│   ├── dashboard.php
+│   ├── listings.php
+│   ├── bookings.php
+│   └── messages.php
+├── student/
+│   ├── dashboard.php
+│   ├── search.php
+│   ├── bookings.php
+│   └── messages.php
+├── index.php
+├── register.php
+├── login.php
+├── logout.php
+├── search.php
+├── hostel-details.php
+├── booking.php
+├── payment.php
+└── terms.php

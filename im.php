@@ -1,0 +1,1 @@
+<img src="/assets/images/logo.png?v=2" alt="Crib Hunt" height="40">

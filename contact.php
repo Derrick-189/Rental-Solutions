@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Save to database if logged in
         if (is_logged_in()) {
             $query = "INSERT INTO messages (sender_id, receiver_id, subject, message) 
-                      VALUES (?, ?, ?, ?)";
+                    VALUES (?, ?, ?, ?)";
             $stmt = $conn->prepare($query);
             $admin_id = 1; // Assuming admin user_id is 1
             $stmt->bind_param("iiss", $_SESSION['user_id'], $admin_id, $subject, $message);

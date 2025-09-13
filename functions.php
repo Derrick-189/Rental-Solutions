@@ -24,9 +24,9 @@ function get_universities() {
 function get_hostel($hostel_id) {
     global $conn;
     $query = "SELECT h.*, u.name AS university_name, u.latitude AS uni_lat, u.longitude AS uni_lon 
-              FROM hostels h 
-              JOIN universities u ON h.university_id = u.university_id 
-              WHERE h.hostel_id = ?";
+            FROM hostels h 
+        JOIN universities u ON h.university_id = u.university_id 
+            WHERE h.hostel_id = ?";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("i", $hostel_id);
     $stmt->execute();
@@ -37,12 +37,19 @@ function get_hostel($hostel_id) {
 // Get hostel images
 function get_hostel_images($hostel_id) {
     global $conn;
-    $query = "SELECT * FROM hostel_images WHERE hostel_id = ? ORDER BY is_primary DESC";
+    
+    $query = "SELECT * FROM hostel_images WHERE hostel_id = ? ORDER BY is_primary DESC, image_id ASC";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("i", $hostel_id);
     $stmt->execute();
     $result = $stmt->get_result();
-    return $result->fetch_all(MYSQLI_ASSOC);
+    
+    $images = [];
+    while ($row = $result->fetch_assoc()) {
+        $images[] = $row;
+    }
+    
+    return $images;
 }
 
 // Search hostels with filters
@@ -50,9 +57,9 @@ function search_hostels($university_id = null, $min_price = null, $max_price = n
     global $conn;
     
     $query = "SELECT h.*, u.name AS university_name 
-              FROM hostels h 
-              JOIN universities u ON h.university_id = u.university_id 
-              WHERE 1=1";
+            FROM hostels h 
+        JOIN universities u ON h.university_id = u.university_id 
+            WHERE 1=1";
     
     $params = [];
     $types = "";
@@ -101,39 +108,46 @@ function search_hostels($university_id = null, $min_price = null, $max_price = n
 function upload_hostel_image($file, $hostel_id, $is_primary = false) {
     global $conn;
     
-    $target_dir = __DIR__ . "/../uploads/hostel_images/";
-    $file_ext = strtolower(pathinfo($file["name"], PATHINFO_EXTENSION));
-    $filename = "hostel_" . $hostel_id . "_" . uniqid() . "." . $file_ext;
-    $target_file = $target_dir . $filename;
+    $upload_dir = __DIR__ . '/uploads/hostel_images/';
     
-    // Check if image file is a actual image
-    $check = getimagesize($file["tmp_name"]);
-    if ($check === false) {
-        return ["success" => false, "message" => "File is not an image."];
+    // Create directory if it doesn't exist
+    if (!file_exists($upload_dir)) {
+        mkdir($upload_dir, 0777, true);
     }
     
-    // Check file size (max 5MB)
-    if ($file["size"] > 5000000) {
-        return ["success" => false, "message" => "File is too large."];
+    // Validate file
+    $allowed_types = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    $max_size = 5 * 1024 * 1024; // 5MB
+    
+    if (!in_array($file['type'], $allowed_types)) {
+        return ['success' => false, 'message' => 'Invalid file type'];
     }
     
-    // Allow certain file formats
-    $allowed_ext = ["jpg", "jpeg", "png", "gif"];
-    if (!in_array($file_ext, $allowed_ext)) {
-        return ["success" => false, "message" => "Only JPG, JPEG, PNG & GIF files are allowed."];
+    if ($file['size'] > $max_size) {
+        return ['success' => false, 'message' => 'File too large'];
     }
     
-    // Upload file
-    if (move_uploaded_file($file["tmp_name"], $target_file)) {
+    // Generate unique filename
+    $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
+    $filename = uniqid() . '_' . time() . '.' . $extension;
+    $target_path = $upload_dir . $filename;
+    
+    // Move uploaded file
+    if (move_uploaded_file($file['tmp_name'], $target_path)) {
         // Save to database
         $query = "INSERT INTO hostel_images (hostel_id, image_path, is_primary) VALUES (?, ?, ?)";
         $stmt = $conn->prepare($query);
         $stmt->bind_param("isi", $hostel_id, $filename, $is_primary);
-        $stmt->execute();
         
-        return ["success" => true, "filename" => $filename];
+        if ($stmt->execute()) {
+            return ['success' => true, 'message' => 'Image uploaded successfully'];
+        } else {
+            // Delete the file if DB insert failed
+            unlink($target_path);
+            return ['success' => false, 'message' => 'Database error: ' . $conn->error];
+        }
     } else {
-        return ["success" => false, "message" => "Error uploading file."];
+        return ['success' => false, 'message' => 'Failed to move uploaded file'];
     }
 }
 
@@ -163,7 +177,7 @@ function delete_hostel($hostel_id) {
     // First delete all images associated with the hostel
     $images = get_hostel_images($hostel_id);
     foreach ($images as $image) {
-        $file_path = __DIR__ . "/../uploads/hostel_images/" . $image['image_path'];
+        $file_path = __DIR__ . "/uploads/hostel_images/" . $image['image_path'];
         if (file_exists($file_path)) {
             unlink($file_path);
         }

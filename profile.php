@@ -175,14 +175,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['ajax_request'])) {
         <div style="display:flex;align-items:center;justify-content:center;gap:2rem;flex-wrap:wrap;">
             <?php
             // Determine image source: absolute URL or local file
-            $profilePicSrc = '/assets/images/default-profile.png';
+            $profilePicSrc = 'assets/images/default-profile.png';
             if (!empty($user['profile_pic'])) {
                 if (filter_var($user['profile_pic'], FILTER_VALIDATE_URL)) {
                     // Absolute URL (external)
                     $profilePicSrc = $user['profile_pic'];
                 } elseif (file_exists(__DIR__ . '/uploads/profile_pics/' . $user['profile_pic'])) {
                     // Local file
-                    $profilePicSrc = '/uploads/profile_pics/' . htmlspecialchars($user['profile_pic']) . '?t=' . time();
+                    $profilePicSrc = 'uploads/profile_pics/' . htmlspecialchars($user['profile_pic']) . '?t=' . time();
                 }
             }
             ?>

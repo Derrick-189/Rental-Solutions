@@ -15,12 +15,12 @@ $user_id = $_SESSION['user_id'];
 
 // Get booking details
 $query = "SELECT b.*, h.name AS hostel_name, h.address AS hostel_address, 
-                 u.name AS university_name, p.transaction_id
-          FROM bookings b
-          JOIN hostels h ON b.hostel_id = h.hostel_id
-          JOIN universities u ON h.university_id = u.university_id
-          LEFT JOIN payments p ON b.booking_id = p.booking_id
-          WHERE b.booking_id = ? AND b.student_id = ?";
+            u.name AS university_name, p.transaction_id
+        FROM bookings b
+        JOIN hostels h ON b.hostel_id = h.hostel_id
+        JOIN universities u ON h.university_id = u.university_id
+        EFT JOIN payments p ON b.booking_id = p.booking_id
+        WHERE b.booking_id = ? AND b.student_id = ?";
 $stmt = $conn->prepare($query);
 $stmt->bind_param("ii", $booking_id, $user_id);
 $stmt->execute();

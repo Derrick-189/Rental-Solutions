@@ -14,10 +14,10 @@ $hostel_id = $_GET['id'] ?? null;
 // Get landlord's hostels
 global $conn;
 $query = "SELECT h.*, u.name AS university_name 
-          FROM hostels h
-          JOIN universities u ON h.university_id = u.university_id
-          WHERE h.landlord_id = ?
-          ORDER BY h.created_at DESC";
+        FROM hostels h
+        JOIN universities u ON h.university_id = u.university_id
+        WHERE h.landlord_id = ?
+        ORDER BY h.created_at DESC";
 $stmt = $conn->prepare($query);
 $stmt->bind_param("i", $_SESSION['user_id']);
 $stmt->execute();
@@ -42,11 +42,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($action === 'create') {
             // Create new hostel
             $query = "INSERT INTO hostels (landlord_id, name, description, address, latitude, longitude, 
-                                          price_per_month, rooms_available, university_id, amenities, rules)
-                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                                        price_per_month, rooms_available, university_id, amenities, rules)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($query);
             $stmt->bind_param("isssdddiiss", $_SESSION['user_id'], $name, $description, $address, 
-                             $latitude, $longitude, $price, $rooms, $university_id, $amenities, $rules);
+                            $latitude, $longitude, $price, $rooms, $university_id, $amenities, $rules);
             
             if ($stmt->execute()) {
                 $hostel_id = $conn->insert_id;
@@ -99,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     
                     if ($uploaded_files > 0) {
                         $_SESSION['success'] = "Hostel created with $uploaded_files images" . 
-                                              (count($upload_errors) > 0 ? " (some uploads failed)" : "");
+                                            (count($upload_errors) > 0 ? " (some uploads failed)" : "");
                     }
                 }
                 
@@ -112,12 +112,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } elseif ($action === 'edit' && $hostel_id) {
             // Update existing hostel
             $query = "UPDATE hostels 
-                      SET name = ?, description = ?, address = ?, latitude = ?, longitude = ?, 
-                          price_per_month = ?, rooms_available = ?, university_id = ?, amenities = ?, rules = ?
-                      WHERE hostel_id = ? AND landlord_id = ?";
+                SET name = ?, description = ?, address = ?, latitude = ?, longitude = ?, 
+                    price_per_month = ?, rooms_available = ?, university_id = ?, amenities = ?, rules = ?
+                WHERE hostel_id = ? AND landlord_id = ?";
             $stmt = $conn->prepare($query);
             $stmt->bind_param("sssdddiissii", $name, $description, $address, $latitude, $longitude, 
-                             $price, $rooms, $university_id, $amenities, $rules, $hostel_id, $_SESSION['user_id']);
+                        $price, $rooms, $university_id, $amenities, $rules, $hostel_id, $_SESSION['user_id']);
             
             if ($stmt->execute()) {
                 // Recalculate distance if university changed
@@ -169,7 +169,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     
                     if ($uploaded_files > 0) {
                         $_SESSION['success'] = "Hostel updated with $uploaded_files new images" . 
-                                              (count($upload_errors) > 0 ? " (some uploads failed)" : "");
+                                            (count($upload_errors) > 0 ? " (some uploads failed)" : "");
                     }
                 }
                 
@@ -185,9 +185,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         // Verify the image belongs to the landlord's hostel
         $verify_query = "SELECT hi.image_id 
-                         FROM hostel_images hi
-                         JOIN hostels h ON hi.hostel_id = h.hostel_id
-                         WHERE hi.image_id = ? AND h.landlord_id = ?";
+                    FROM hostel_images hi
+                JOIN hostels h ON hi.hostel_id = h.hostel_id
+                WHERE hi.image_id = ? AND h.landlord_id = ?";
         $verify_stmt = $conn->prepare($verify_query);
         $verify_stmt->bind_param("ii", $image_id, $_SESSION['user_id']);
         $verify_stmt->execute();
@@ -208,7 +208,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             if ($delete_stmt->execute()) {
                 // Delete file
-                $file_path = __DIR__ . "/../uploads/hostel_images/" . $image['image_path'];
+                $file_path = __DIR__ . "/uploads/hostel_images/" . $image['image_path'];
                 if (file_exists($file_path)) {
                     unlink($file_path);
                 }
@@ -227,9 +227,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         // Verify the image belongs to the landlord's hostel
         $verify_query = "SELECT hi.image_id 
-                         FROM hostel_images hi
-                         JOIN hostels h ON hi.hostel_id = h.hostel_id
-                         WHERE hi.image_id = ? AND h.landlord_id = ?";
+            FROM hostel_images hi
+                        JOIN hostels h ON hi.hostel_id = h.hostel_id
+                    WHERE hi.image_id = ? AND h.landlord_id = ?";
         $verify_stmt = $conn->prepare($verify_query);
         $verify_stmt->bind_param("ii", $image_id, $_SESSION['user_id']);
         $verify_stmt->execute();
@@ -322,7 +322,7 @@ if (isset($error)) {
                     <?php foreach ($hostels as $h): 
                         $amenities = json_decode($h['amenities'], true) ?? [];
                         $primary_image = get_hostel_images($h['hostel_id']);
-                        $primary_image_path = !empty($primary_image) ? '/uploads/hostel_images/' . $primary_image[0]['image_path'] : '/assets/images/hostel-placeholder.jpg';
+                        $primary_image_path = !empty($primary_image) ? '/uploads/hostel_images/' . $primary_image[0]['image_path'] : 'assets/images/hostel-placeholder.jpg';
                     ?>
                         <tr>
                             <td>
@@ -381,7 +381,7 @@ if (isset($error)) {
                         <div class="mb-3">
                             <label for="name" class="form-label">Hostel Name</label>
                             <input type="text" class="form-control" id="name" name="name" 
-                                   value="<?php echo htmlspecialchars($hostel['name'] ?? ''); ?>" required>
+                            value="<?php echo htmlspecialchars($hostel['name'] ?? ''); ?>" required>
                         </div>
                         
                         <div class="mb-3">
@@ -407,13 +407,13 @@ if (isset($error)) {
                         <div class="mb-3">
                             <label for="price" class="form-label">Price per Month (UGX)</label>
                             <input type="number" class="form-control" id="price" name="price" min="0" step="1000" 
-                                   value="<?php echo htmlspecialchars($hostel['price_per_month'] ?? ''); ?>" required>
+                            value="<?php echo htmlspecialchars($hostel['price_per_month'] ?? ''); ?>" required>
                         </div>
                         
                         <div class="mb-3">
                             <label for="rooms" class="form-label">Rooms Available</label>
                             <input type="number" class="form-control" id="rooms" name="rooms" min="1" 
-                                   value="<?php echo htmlspecialchars($hostel['rooms_available'] ?? '1'); ?>" required>
+                                value="<?php echo htmlspecialchars($hostel['rooms_available'] ?? '1'); ?>" required>
                         </div>
                     </div>
                 </div>
@@ -434,12 +434,12 @@ if (isset($error)) {
                             <div class="col-md-6 mb-3">
                                 <label for="latitude" class="form-label">Latitude</label>
                                 <input type="text" class="form-control" id="latitude" name="latitude" 
-                                       value="<?php echo htmlspecialchars($hostel['latitude'] ?? '0.3136'); ?>" required>
+                            value="<?php echo htmlspecialchars($hostel['latitude'] ?? '0.3136'); ?>" required>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="longitude" class="form-label">Longitude</label>
                                 <input type="text" class="form-control" id="longitude" name="longitude" 
-                                       value="<?php echo htmlspecialchars($hostel['longitude'] ?? '32.5811'); ?>" required>
+                                    value="<?php echo htmlspecialchars($hostel['longitude'] ?? '32.5811'); ?>" required>
                             </div>
                         </div>
                         
@@ -479,8 +479,8 @@ if (isset($error)) {
                         <?php foreach ($amenities_list as $amenity): ?>
                             <div class="form-check mb-2">
                                 <input class="form-check-input" type="checkbox" name="amenities[]" 
-                                       id="amenity_<?php echo strtolower($amenity); ?>" value="<?php echo $amenity; ?>"
-                                       <?php echo in_array($amenity, $current_amenities) ? 'checked' : ''; ?>>
+                                    id="amenity_<?php echo strtolower($amenity); ?>" value="<?php echo $amenity; ?>"
+                                    <?php echo in_array($amenity, $current_amenities) ? 'checked' : ''; ?>>
                                 <label class="form-check-label" for="amenity_<?php echo strtolower($amenity); ?>">
                                     <?php echo $amenity; ?>
                                 </label>
@@ -501,8 +501,8 @@ if (isset($error)) {
                                     <?php foreach ($images as $image): ?>
                                         <div class="col-6">
                                             <div class="position-relative">
-                                                <img src="uploads/hostel_images/<?php echo htmlspecialchars($image['image_path']); ?>" 
-                                                     class="img-thumbnail w-100 mb-2" style="height: 100px; object-fit: cover;">
+                                                <img src="/uploads/hostel_images/<?php echo htmlspecialchars($image['image_path']); ?>" 
+                                                    class="img-thumbnail w-100 mb-2" style="height: 100px; object-fit: cover;">
                                                 <div class="d-flex justify-content-between">
                                                     <?php if ($image['is_primary']): ?>
                                                         <span class="badge bg-success">Primary</span>

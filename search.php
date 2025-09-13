@@ -45,11 +45,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && (!empty($university_id) || !empty($m
                         <div class="row">
                             <div class="col">
                                 <input type="number" class="form-control" placeholder="Min" name="min_price" 
-                                       value="<?php echo htmlspecialchars($min_price); ?>">
+                                    value="<?php echo htmlspecialchars($min_price); ?>">
                             </div>
                             <div class="col">
                                 <input type="number" class="form-control" placeholder="Max" name="max_price" 
-                                       value="<?php echo htmlspecialchars($max_price); ?>">
+                                    value="<?php echo htmlspecialchars($max_price); ?>">
                             </div>
                         </div>
                     </div>
@@ -59,9 +59,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && (!empty($university_id) || !empty($m
                         <?php foreach ($amenities_list as $amenity): ?>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" name="amenities[]" 
-                                       id="amenity_<?php echo strtolower($amenity); ?>" 
-                                       value="<?php echo $amenity; ?>"
-                                       <?php echo in_array($amenity, $selected_amenities) ? 'checked' : ''; ?>>
+                                    id="amenity_<?php echo strtolower($amenity); ?>" 
+                                value="<?php echo $amenity; ?>"
+                                <?php echo in_array($amenity, $selected_amenities) ? 'checked' : ''; ?>>
                                 <label class="form-check-label" for="amenity_<?php echo strtolower($amenity); ?>">
                                     <?php echo $amenity; ?>
                                 </label>
@@ -101,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && (!empty($university_id) || !empty($m
                 <?php foreach ($hostels as $hostel): 
                     $amenities = json_decode($hostel['amenities'], true) ?? [];
                     $primary_image = get_hostel_images($hostel['hostel_id']);
-                    $primary_image_path = !empty($primary_image) ? 'uploads/' . $primary_image[0]['image_path'] : '.hostel_images/hostel-placeholder.jpg';
+                    $primary_image_path = !empty($primary_image) ? 'uploads/hostel_images/' . $primary_image[0]['image_path'] : '.hostel_images/hostel-placeholder.jpg';
                 ?>
                     <div class="col-md-6 col-lg-4 mb-4">
                         <div class="card h-100">

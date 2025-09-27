@@ -41,7 +41,7 @@ $distance = calculate_distance(
                         <?php foreach ($images as $index => $image): ?>
                             <div class="carousel-item <?php echo $index === 0 ? 'active' : ''; ?>">
                                 <img src="/uploads/hostel_images/<?php echo htmlspecialchars($image['image_path']); ?>" 
-                                     class="d-block w-100 hostel-detail-image" alt="Hostel Image">
+                                class="d-block w-100 hostel-detail-image" alt="Hostel Image">
                             </div>
                         <?php endforeach; ?>
                     <?php endif; ?>
@@ -117,8 +117,8 @@ $distance = calculate_distance(
                         <input type="hidden" name="hostel_id" value="<?php echo $hostel_id; ?>">
                         
                         <div class="mb-3">
-                            <label for="check_in" class="form-label">Check-in Date</label>
-                            <input type="date" class="form-control" id="check_in" name="check_in" required>
+                            <label for="start_date" class="form-label">Check-in Date</label>
+                            <input type="date" class="form-control" id="start_date" name="start_date" required>
                         </div>
                         
                         <div class="mb-3">
@@ -212,6 +212,12 @@ document.getElementById('duration').addEventListener('change', function() {
     
     document.getElementById('totalAmount').textContent = 'UGX ' + totalAmount.toLocaleString();
     document.getElementById('platformFee').textContent = 'UGX ' + platformFee.toLocaleString();
+});
+
+// Set minimum date for start_date field
+document.addEventListener('DOMContentLoaded', function() {
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('start_date').min = today;
 });
 
 // Initialize hostel map

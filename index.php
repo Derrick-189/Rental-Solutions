@@ -2,7 +2,7 @@
 session_start();
 require_once __DIR__ . '/db.php'; // Database connection
 
-$page_title = "Welcome to Crib Hunt";
+$page_title = "Welcome to Rental Solutions";
 require_once __DIR__ . '/header.php';
 ?>
 

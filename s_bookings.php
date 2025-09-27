@@ -130,11 +130,16 @@ if (isset($_SESSION['error'])) {
                                     </span>
                                 </td>
                                 <td>
-                                    <span class="badge bg-<?php 
-                                        echo $booking['status'] === 'confirmed' ? 'success' : 
-                                             ($booking['status'] === 'pending' ? 'warning' : 'danger'); 
-                                    ?>">
-                                        <?php echo ucfirst($booking['status']); ?>
+                                    <span class="badge <?php echo get_booking_status_badge($booking['status'], $booking['payment_status']); ?>">
+                                        <?php 
+                                        if ($booking['status'] === 'completed' && $booking['payment_status'] === 'paid') {
+                                            echo 'Completed';
+                                        } elseif ($booking['status'] === 'pending' && $booking['payment_status'] === 'pending') {
+                                            echo 'Pending Payment';
+                                        } else {
+                                            echo ucfirst($booking['status']);
+                                        }
+                                        ?>
                                     </span>
                                 </td>
                                 <td>
@@ -143,6 +148,12 @@ if (isset($_SESSION['error'])) {
                                            class="btn btn-outline-primary" title="View">
                                             <i class="bi bi-eye"></i>
                                         </a>
+                                        <?php if ($booking['status'] === 'pending' && $booking['payment_status'] === 'pending'): ?>
+                                            <a href="payment.php?booking_id=<?php echo $booking['booking_id']; ?>" 
+                                               class="btn btn-success" title="Complete Payment">
+                                                <i class="bi bi-credit-card"></i>
+                                            </a>
+                                        <?php endif; ?>
                                         <?php if ($booking['status'] === 'pending' || $booking['status'] === 'confirmed'): ?>
                                             <a href="s_bookings.php?action=cancel&id=<?php echo $booking['booking_id']; ?>" 
                                                class="btn btn-outline-danger" 

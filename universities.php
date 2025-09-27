@@ -20,7 +20,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $location = sanitize_input($conn, $_POST['location'] ?? '');
     $latitude = (float)($_POST['latitude'] ?? 0);
     $longitude = (float)($_POST['longitude'] ?? 0);
-    $description = sanitize_input($conn, $_POST['description'] ?? '');
     
     // Validate inputs
     if (empty($name)) $errors[] = "University name is required";
@@ -29,10 +28,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     if ($action === 'create') {
         if (empty($errors)) {
-            $query = "INSERT INTO universities (name, location, latitude, longitude, description) 
-                      VALUES (?, ?, ?, ?, ?)";
+            $query = "INSERT INTO universities (name, location, latitude, longitude) 
+                      VALUES (?, ?, ?, ?)";
             $stmt = $conn->prepare($query);
-            $stmt->bind_param("ssdds", $name, $location, $latitude, $longitude, $description);
+            $stmt->bind_param("ssdd", $name, $location, $latitude, $longitude);
             
             if ($stmt->execute()) {
                 $_SESSION['success'] = "University added successfully!";
@@ -45,10 +44,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($action === 'edit' && $university_id) {
         if (empty($errors)) {
             $query = "UPDATE universities 
-                      SET name = ?, location = ?, latitude = ?, longitude = ?, description = ?
+                      SET name = ?, location = ?, latitude = ?, longitude = ?
                       WHERE university_id = ?";
             $stmt = $conn->prepare($query);
-            $stmt->bind_param("ssddsi", $name, $location, $latitude, $longitude, $description, $university_id);
+            $stmt->bind_param("ssddi", $name, $location, $latitude, $longitude, $university_id);
             
             if ($stmt->execute()) {
                 $_SESSION['success'] = "University updated successfully!";
@@ -156,9 +155,6 @@ if (!empty($errors)) {
                                 <td><?php echo $uni['university_id']; ?></td>
                                 <td>
                                     <strong><?php echo htmlspecialchars($uni['name']); ?></strong>
-                                    <?php if (!empty($uni['description'])): ?>
-                                        <p class="text-muted mb-0 small"><?php echo htmlspecialchars($uni['description']); ?></p>
-                                    <?php endif; ?>
                                 </td>
                                 <td><?php echo htmlspecialchars($uni['location']); ?></td>
                                 <td>
@@ -216,12 +212,6 @@ if (!empty($errors)) {
                                    value="<?php echo htmlspecialchars($university['location'] ?? ''); ?>" required>
                         </div>
                         
-                        <div class="mb-3">
-                            <label for="description" class="form-label">Description (Optional)</label>
-                            <textarea class="form-control" id="description" name="description" rows="3"><?php 
-                                echo htmlspecialchars($university['description'] ?? ''); 
-                            ?></textarea>
-                        </div>
                         
                         <div class="row">
                             <div class="col-md-6 mb-3">

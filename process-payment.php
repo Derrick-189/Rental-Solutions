@@ -30,10 +30,10 @@ $booking = $result->fetch_assoc();
 // Generate a random transaction ID (in a real app, this would come from payment gateway)
 $transaction_id = 'TXN' . time() . rand(1000, 9999);
 
-// Update booking status
+// Update booking status to completed
 $update_query = "UPDATE bookings SET 
                  payment_status = 'paid',
-                 status = 'confirmed',
+                 status = 'completed',
                  transaction_id = ?
                  WHERE booking_id = ?";
 $stmt = $conn->prepare($update_query);

@@ -3,7 +3,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-4">
-                <h5>Crib Hunt</h5>
+                <h5>Rental Solutions</h5>
                 <p>Connecting students with affordable and convenient hostel accommodations near their universities.</p>
             </div>
             <div class="col-md-4">
@@ -34,13 +34,13 @@
             </div>
             <div class="col-md-4">
                 <h5>Contact</h5>
-                <p><i class="bi bi-envelope"></i> info@ugandacribhunt.com<br>
+                <p><i class="bi bi-envelope"></i> info@rentalsolutions.com<br>
                 <i class="bi bi-telephone"></i> +256 761 891599<br>
                 <i class="bi bi-whatsapp"></i> +256 706 507291</p>
             </div>
         </div>
         <div class="text-center mt-3">
-            <p>&copy; <?php echo date('Y'); ?> Crib Hunt. All rights reserved.</p>
+            <p>&copy; <?php echo date('Y'); ?> Rental Solutions. All rights reserved.</p>
         </div>
     </div>
 </footer>

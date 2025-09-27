@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . 'auth.php';
-require_once __DIR__ . 'functions.php';
+require_once __DIR__ . '/auth.php';
+require_once __DIR__ . '/functions.php';
 
 // Only students can view bookings
 check_user_role(['student']);
@@ -19,7 +19,7 @@ $query = "SELECT b.*, h.name AS hostel_name, h.address AS hostel_address,
         FROM bookings b
         JOIN hostels h ON b.hostel_id = h.hostel_id
         JOIN universities u ON h.university_id = u.university_id
-        EFT JOIN payments p ON b.booking_id = p.booking_id
+        LEFT JOIN payments p ON b.booking_id = p.booking_id
         WHERE b.booking_id = ? AND b.student_id = ?";
 $stmt = $conn->prepare($query);
 $stmt->bind_param("ii", $booking_id, $user_id);
@@ -34,7 +34,7 @@ if ($result->num_rows === 0) {
 $booking = $result->fetch_assoc();
 
 $page_title = "Booking Confirmation";
-require_once __DIR__ . 'header.php';
+require_once __DIR__ . '/header.php';
 ?>
 
 <div class="row justify-content-center">
@@ -117,4 +117,4 @@ require_once __DIR__ . 'header.php';
     </div>
 </div>
 
-<?php require_once __DIR__ . 'footer.php'; ?>
+<?php require_once __DIR__ . '/footer.php'; ?>

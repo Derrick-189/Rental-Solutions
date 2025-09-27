@@ -213,4 +213,62 @@ function time_ago($timestamp) {
         return date("M j, Y", strtotime($timestamp));
     }
 }
+
+/**
+ * Update booking status
+ */
+function update_booking_status($booking_id, $status, $payment_status = null) {
+    global $conn;
+    
+    $query = "UPDATE bookings SET status = ?";
+    $params = [$status];
+    $types = "s";
+    
+    if ($payment_status !== null) {
+        $query .= ", payment_status = ?";
+        $params[] = $payment_status;
+        $types .= "s";
+    }
+    
+    $query .= " WHERE booking_id = ?";
+    $params[] = $booking_id;
+    $types .= "i";
+    
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param($types, ...$params);
+    return $stmt->execute();
+}
+
+/**
+ * Get booking status badge class
+ */
+function get_booking_status_badge($status, $payment_status = null) {
+    if ($status === 'completed' && $payment_status === 'paid') {
+        return 'bg-success';
+    } elseif ($status === 'pending' && $payment_status === 'pending') {
+        return 'bg-warning';
+    } elseif ($status === 'cancelled') {
+        return 'bg-danger';
+    } elseif ($payment_status === 'failed') {
+        return 'bg-danger';
+    } else {
+        return 'bg-secondary';
+    }
+}
+
+/**
+ * Get pending booking count for a user
+ */
+function get_pending_booking_count($user_id) {
+    global $conn;
+    
+    $query = "SELECT COUNT(*) as count FROM bookings 
+              WHERE student_id = ? AND status = 'pending' AND payment_status = 'pending'";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result()->fetch_assoc();
+    
+    return $result['count'];
+}
 ?>

@@ -32,6 +32,18 @@ check_user_role(['student']);
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) === 'pending-bookings.php' ? 'active' : ''; ?>" 
+                   href="pending-bookings.php">
+                    <i class="bi bi-clock me-2"></i>Pending Bookings
+                    <?php 
+                    $pending_count = get_pending_booking_count($_SESSION['user_id']);
+                    if ($pending_count > 0): 
+                    ?>
+                        <span class="badge bg-warning rounded-pill float-end"><?php echo $pending_count; ?></span>
+                    <?php endif; ?>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) === 'payment-history.php' ? 'active' : ''; ?>" 
                    href="payment-history.php">
                     <i class="bi bi-credit-card me-2"></i>Payment History

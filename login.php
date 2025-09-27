@@ -27,6 +27,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $user = $result->fetch_assoc();
             
             if (password_verify($password, $user['password'])) {
+                // If user must reset password, generate a reset token and redirect to reset page
+                if (!empty($user['must_reset_password']) && (int)$user['must_reset_password'] === 1) {
+                    $token = bin2hex(random_bytes(32));
+                    $expires = date('Y-m-d H:i:s', time() + 3600); // 1 hour
+                    $q = "INSERT INTO password_resets (user_id, token, expires_at) VALUES (?, ?, ?)";
+                    $ps = $conn->prepare($q);
+                    $ps->bind_param("iss", $user['user_id'], $token, $expires);
+                    $ps->execute();
+                    header("Location: reset-password.php?token=" . $token);
+                    exit();
+                }
                 // Set session variables
                 $_SESSION['user_id'] = $user['user_id'];
                 $_SESSION['user_type'] = $user['user_type'];

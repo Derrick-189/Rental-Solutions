@@ -59,7 +59,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($user_id > 0) {
             $_SESSION['success'] = "User updated successfully";
         } else {
-            $_SESSION['success'] = "User created successfully. Temporary password: " . $temp_password;
+            // Create a reset token and send welcome email with reset link
+            $token = bin2hex(random_bytes(32));
+            $expires = date('Y-m-d H:i:s', time() + 3600); // 1 hour
+            // Fetch newly created user_id
+            $new_user_id = $conn->insert_id;
+            // Ensure must_reset_password column exists
+            @mysqli_query($conn, "ALTER TABLE users ADD COLUMN IF NOT EXISTS must_reset_password TINYINT(1) NOT NULL DEFAULT 0");
+            // Mark user to require password reset on first login
+            $mrq = $conn->prepare("UPDATE users SET must_reset_password = 1 WHERE user_id = ?");
+            $mrq->bind_param("i", $new_user_id);
+            $mrq->execute();
+            $q = "INSERT INTO password_resets (user_id, token, expires_at) VALUES (?, ?, ?)";
+            $ps = $conn->prepare($q);
+            $ps->bind_param("iss", $new_user_id, $token, $expires);
+            if ($ps->execute()) {
+                $reset_link = "http://" . $_SERVER['HTTP_HOST'] . "/reset-password.php?token=" . $token;
+                $subject = "Welcome to Crib Hunt - Set Your Password";
+                $message = "Hello " . $full_name . ",\n\n";
+                $message .= "An admin created an account for you on Crib Hunt. Please set your password using the link below:\n";
+                $message .= $reset_link . "\n\n";
+                $message .= "This link will expire in 1 hour. If you didn't expect this, ignore this email.";
+                $headers = "From: no-reply@" . $_SERVER['HTTP_HOST'] . "\r\n";
+                // Attempt to send email (will depend on server mail config)
+                @mail($email, $subject, $message, $headers);
+            }
+            $_SESSION['success'] = "User created successfully. A password setup link has been emailed to the user.";
         }
         header("Location: admin_users.php");
         exit();

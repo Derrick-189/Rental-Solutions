@@ -1,3 +1,22 @@
+<?php
+    $heroImages = [];
+    $imagesDir = __DIR__ . '/assets/images';
+    $webBase   = 'assets/images/';
+    $extensions = ['jpg','jpeg','png','webp','avif','gif'];
+    if (is_dir($imagesDir)) {
+        foreach ($extensions as $ext) {
+            foreach (glob($imagesDir . '/*.' . $ext) as $file) {
+                $base = basename($file);
+                if (stripos($base, 'logo') !== false) { continue; }
+                $heroImages[] = $webBase . $base;
+            }
+        }
+    }
+    sort($heroImages);
+    if (empty($heroImages)) {
+        $heroImages = ['/assets/images/header.jpeg'];
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,16 +28,54 @@
     <link rel="stylesheet" href="/assets/css/style.css">
     <style>
         .hero-section {
-            background-image: url('/assets/images/hostel-bg.png');
+            background-image: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.35)), url('<?php echo htmlspecialchars($heroImages[0] ?? 'assets/images/header.jpeg', ENT_QUOTES); ?>');
             background-size: cover;
             background-position: center;
-            height: 500px;
-            color: white;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+            min-height: 500px;
+            color: #ffffff;
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 48px 0;
         }
+
+        .hero-section .container {
+            background: rgba(0, 0, 0, 0.35);
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+            border-radius: 16px;
+            padding: 32px 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+        }
+
+        .hero-section h1 {
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            text-shadow: 0 3px 18px rgba(0,0,0,0.6);
+        }
+
+        .hero-section .lead {
+            font-size: 1.15rem;
+            opacity: 0.95;
+        }
+
+        .hero-section .btn {
+            box-shadow: 0 6px 20px rgba(13,110,253,0.4);
+        }
+
+        @media (max-width: 576px) {
+            .hero-section {
+                min-height: 420px;
+                padding: 32px 0;
+            }
+            .hero-section h1 {
+                font-size: 1.9rem;
+            }
+            .hero-section .lead {
+                font-size: 1rem;
+            }
+        }
+
         .restricted-link {
             cursor: not-allowed;
             opacity: 0.6;
@@ -96,5 +153,19 @@
             var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
                 return new bootstrap.Tooltip(tooltipTriggerEl);
             });
+            // Hero background slideshow
+            var hero = document.querySelector('.hero-section');
+            if (hero) {
+                var gradient = 'linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.35))';
+                var images = <?php echo json_encode(array_values($heroImages)); ?>;
+                if (images.length > 0) {
+                    hero.style.backgroundImage = gradient + ', url(' + images[0] + ')';
+                    var current = 0;
+                    setInterval(function() {
+                        current = (current + 1) % images.length;
+                        hero.style.backgroundImage = gradient + ', url(' + images[current] + ')';
+                    }, 6000);
+                }
+            }
         });
     </script>

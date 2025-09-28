@@ -15,7 +15,7 @@ $page_title = "Unauthorized Access";
                 <p class="text-muted">
                     Please contact the administrator if you believe this is an error.
                 </p>
-                <a href="/" class="btn btn-primary mt-3">
+                <a href="index.php" class="btn btn-primary mt-3">
                     <i class="bi bi-house-door"></i> Return to Home
                 </a>
             </div>

@@ -11,7 +11,7 @@ function is_logged_in() {
 // Redirect if not logged in
 function require_login() {
     if (!is_logged_in()) {
-        header("Location: /login.php");
+        header("Location: login.php");
         exit();
     }
 }
@@ -19,7 +19,7 @@ function require_login() {
 // Check user role
 function check_user_role($allowed_roles) {
     if (!is_logged_in() || !in_array($_SESSION['user_type'], $allowed_roles)) {
-        header("Location: /unauthorized.php");
+        header("Location: unauthorized.php");
         exit();
     }
 }

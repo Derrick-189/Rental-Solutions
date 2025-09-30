@@ -3,7 +3,7 @@ require_once __DIR__ . '/auth.php';
 require_once __DIR__ . '/functions.php';
 
 check_user_role(['admin']);
-$user = get_current_user();
+$user = get_logged_in_user();
 
 $page_title = "Manage Users";
 require_once __DIR__ . '/header.php';

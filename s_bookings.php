@@ -3,7 +3,6 @@ require_once __DIR__ . '/auth.php';
 require_once __DIR__ . '/functions.php';
 
 check_user_role(['student']);
-$user = get_current_user();
 
 $page_title = "My Bookings";
 require_once __DIR__ . '/header.php';
@@ -14,8 +13,7 @@ $query = "SELECT b.*, h.name AS hostel_name, h.address AS hostel_address,
           FROM bookings b
           JOIN hostels h ON b.hostel_id = h.hostel_id
           JOIN universities u ON h.university_id = u.university_id
-          WHERE b.student_id = ?
-          ORDER BY b.created_at DESC";
+          WHERE b.student_id = ?";
 $stmt = $conn->prepare($query);
 $stmt->bind_param("i", $_SESSION['user_id']);
 $stmt->execute();

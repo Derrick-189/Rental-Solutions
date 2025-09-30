@@ -5,7 +5,6 @@ session_start();
 require_once __DIR__ . '/db.php';
 
 $page_title = "Login";
-require_once __DIR__ . '/header.php';
 
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -62,6 +61,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
+
+<?php require_once __DIR__ . '/header.php'; ?>
 
 <div class="row justify-content-center">
     <div class="col-md-6 col-lg-4">

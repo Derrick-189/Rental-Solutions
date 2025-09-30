@@ -3,7 +3,7 @@ require_once __DIR__ . '/auth.php';
 
 // Only admins can access this page
 check_user_role(['admin']);
-$user = get_current_user();
+$user = get_logged_in_user();
 
 $page_title = "Admin Dashboard";
 require_once __DIR__ . '/header.php';

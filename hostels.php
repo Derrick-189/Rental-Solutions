@@ -3,7 +3,7 @@ require_once __DIR__ . '/../../includes/auth.php';
 require_once __DIR__ . '/../../includes/functions.php';
 
 check_user_role(['admin']);
-$user = get_current_user();
+$user = get_logged_in_user();
 
 $page_title = "Manage Hostels";
 require_once __DIR__ . '/../../includes/header.php';
@@ -14,8 +14,6 @@ $query = "SELECT h.*, u.full_name AS landlord_name, u.phone AS landlord_phone
           JOIN users u ON h.landlord_id = u.user_id
           ORDER BY h.created_at DESC";
 $hostels = $conn->query($query)->fetch_all(MYSQLI_ASSOC);
-
-// Handle actions
 if (isset($_GET['action']) && isset($_GET['id'])) {
     $action = $_GET['action'];
     $hostel_id = (int)$_GET['id'];

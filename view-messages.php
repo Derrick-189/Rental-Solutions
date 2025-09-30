@@ -3,7 +3,7 @@ require_once __DIR__ . '/auth.php';
 
 // Only landlords can access this page
 check_user_role(['landlord']);
-$user = get_current_user();
+$user = get_logged_in_user();
 
 if (!isset($_GET['id'])) {
     header('Location: l_messages.php');

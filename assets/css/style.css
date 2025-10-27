@@ -1,0 +1,41 @@
+/* Global background for entire project */
+
+/* Ensure background covers the full viewport height */
+html, body {
+  min-height: 100%;
+}
+
+/* Project-wide gradient background (non-intrusive: no global text color set) */
+body {
+  background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+  background-attachment: fixed;           /* nice parallax feel */
+  background-repeat: no-repeat;
+  background-size: cover;                  /* cover viewport */
+}
+
+/* Optional: a utility class to apply the same gradient to specific sections if needed */
+.app-gradient {
+  background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* Keep Bootstrap components readable by not forcing global font colors. */
+
+/* Navbar button enhancements for clarity */
+.navbar .btn {
+  border-radius: 9999px; /* pill */
+  padding: 0.45rem 0.9rem;
+}
+
+/* Space buttons horizontally on large screens; stack spacing handled inline via mb-2 */
+@media (min-width: 992px) {
+  .navbar .btn + .btn { margin-left: 0.5rem; }
+}
+
+/* Disabled-looking restricted button */
+.navbar .btn.restricted-link.disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}

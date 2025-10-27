@@ -25,7 +25,7 @@
     <title>Rental Solutions - <?php echo $page_title ?? 'home'; ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css">
     <style>
         .hero-section {
             background-image: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.35)), url('<?php echo htmlspecialchars($heroImages[0] ?? 'assets/images/header.jpeg', ENT_QUOTES); ?>');
@@ -92,52 +92,52 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.php">Home</a>
+                <ul class="navbar-nav me-auto align-items-lg-center">
+                    <li class="nav-item mb-2 mb-lg-0">
+                        <a class="btn btn-outline-light btn-sm me-lg-2" href="index.php">Home</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="search.php">Find Hostels</a>
+                    <li class="nav-item mb-2 mb-lg-0">
+                        <a class="btn btn-outline-light btn-sm me-lg-2" href="search.php">Find Hostels</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item mb-2 mb-lg-0">
     <?php if (isset($_SESSION['user_type'])) : ?>
         <?php if ($_SESSION['user_type'] === 'student') : ?>
-            <a class="nav-link" href="search.php">Universities</a>
+            <a class="btn btn-outline-light btn-sm me-lg-2" href="search.php">Universities</a>
         <?php elseif ($_SESSION['user_type'] === 'admin') : ?>
-            <a class="nav-link" href="universities.php">Universities</a>
+            <a class="btn btn-outline-light btn-sm me-lg-2" href="universities.php">Universities</a>
         <?php else : ?>
-            <a class="nav-link restricted-link" 
+            <a class="btn btn-outline-light btn-sm me-lg-2 restricted-link disabled" 
                data-bs-toggle="tooltip" 
                data-bs-placement="bottom" 
-               title="Universities management is only available to administrators">
+               title="Universities management is only available to administrators" aria-disabled="true" tabindex="-1">
                 Universities
             </a>
         <?php endif; ?>
     <?php else : ?>
-        <a class="nav-link" href="universities.php">Universities</a>
+        <a class="btn btn-outline-light btn-sm me-lg-2" href="universities.php">Universities</a>
     <?php endif; ?>
 </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="contact.php">Contact</a>
+                    <li class="nav-item mb-2 mb-lg-0">
+                        <a class="btn btn-outline-light btn-sm" href="contact.php">Contact</a>
                     </li>
                 </ul>
-                <ul class="navbar-nav">
+                <ul class="navbar-nav align-items-lg-center">
                     <?php if (isset($_SESSION['user_id'])): ?>
                         <?php if ($_SESSION['user_type'] === 'student'): ?>
-                            <li class="nav-item"><a class="nav-link" href="dashboard.php">Student Dashboard</a></li>
+                            <li class="nav-item mb-2 mb-lg-0"><a class="btn btn-outline-light btn-sm me-lg-2" href="dashboard.php">Student Dashboard</a></li>
                         <?php elseif ($_SESSION['user_type'] === 'landlord'): ?>
-                            <li class="nav-item"><a class="nav-link" href="l_dashboard.php">Landlord Dashboard</a></li>
+                            <li class="nav-item mb-2 mb-lg-0"><a class="btn btn-outline-light btn-sm me-lg-2" href="l_dashboard.php">Landlord Dashboard</a></li>
                         <?php elseif ($_SESSION['user_type'] === 'admin'): ?>
-                            <li class="nav-item"><a class="nav-link" href="admin_dashboard.php">Admin Dashboard</a></li>
+                            <li class="nav-item mb-2 mb-lg-0"><a class="btn btn-outline-light btn-sm me-lg-2" href="admin_dashboard.php">Admin Dashboard</a></li>
                         <?php endif; ?>
-                        <li class="nav-item"><a class="nav-link" href="profile.php">Profile</a></li>
-                        <li class="nav-item"><a class="nav-link" href="logout.php">Logout</a></li>
+                        <li class="nav-item mb-2 mb-lg-0"><a class="btn btn-outline-light btn-sm me-lg-2" href="profile.php">Profile</a></li>
+                        <li class="nav-item mb-2 mb-lg-0"><a class="btn btn-danger btn-sm" href="logout.php">Logout</a></li>
                     <?php else: ?>
-                        <li class="nav-item">
-                            <a class="nav-link" href="login.php">Login</a>
+                        <li class="nav-item mb-2 mb-lg-0">
+                            <a class="btn btn-light btn-sm text-primary me-lg-2" href="login.php">Login</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="register.php">Register</a>
+                        <li class="nav-item mb-2 mb-lg-0">
+                            <a class="btn btn-warning btn-sm text-dark" href="register.php">Register</a>
                         </li>
                     <?php endif; ?>
                 </ul>

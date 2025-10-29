@@ -6,7 +6,6 @@ check_user_role(['student']);
 $user = get_logged_in_user();
 
 $page_title = "Messages";
-require_once __DIR__ . '/header.php';
 
 // Get message threads
 $query = "SELECT m.*, u.full_name AS sender_name, u.user_type AS sender_type
@@ -57,6 +56,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
+// Safe to start output now
+$page_title = "Messages";
+require_once __DIR__ . '/header.php';
 ?>
 
 <div class="row">

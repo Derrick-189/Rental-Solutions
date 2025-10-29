@@ -6,7 +6,7 @@ check_user_role(['landlord']);
 $user = get_logged_in_user();
 
 $page_title = "Manage Hostel Listings";
-require_once __DIR__ . '/header.php';
+// Do not include header yet; we may redirect below during POST handling
 
 $action = $_GET['action'] ?? 'list';
 $hostel_id = $_GET['id'] ?? null;
@@ -280,7 +280,7 @@ if ($action === 'edit' && $hostel_id) {
     
     $images = get_hostel_images($hostel_id);
 }
-
+require_once __DIR__ . '/header.php';
 // Display success/error messages
 if (isset($_SESSION['success'])) {
     echo '<div class="alert alert-success">' . $_SESSION['success'] . '</div>';

@@ -1,4 +1,7 @@
 <?php
+// Enable output buffering early to avoid 'headers already sent' issues on hosts
+if (!ob_get_level()) { ob_start(); }
+
 session_start();
 require_once __DIR__ . '/db.php';
 require_once __DIR__ . '/functions.php';

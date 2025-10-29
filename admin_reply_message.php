@@ -2,7 +2,6 @@
 require_once __DIR__ . '/auth.php';
 check_user_role(['admin']);
 $page_title = "Reply to Message";
-require_once __DIR__ . '/header.php';
 
 if (!isset($_GET['id'])) {
     header('Location: admin_messages.php');
@@ -53,13 +52,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error_message = "Error sending message: " . $conn->error;
     }
 }
-?>
 
-<div class="container-fluid">
-    <div class="row">
-        <?php require_once __DIR__ . '/admin_sidebar.php'; ?>
-        
-        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+// Safe to start output now
+require_once __DIR__ . '/header.php'; ?>
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <h1 class="h2">Reply to Message</h1>
                 <a href="admin_messages.php" class="btn btn-outline-secondary">Back to Messages</a>

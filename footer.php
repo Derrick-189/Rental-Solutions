@@ -37,7 +37,6 @@
                 <p><i class="bi bi-envelope"></i> info@rentalsolutions.com<br>
                 <i class="bi bi-telephone"></i> +256 761 891599<br>
                 <i class="bi bi-whatsapp"></i> +256 706 507291</p>
-            </div>
         </div>
         <div class="text-center mt-3">
             <p>&copy; <?php echo date('Y'); ?> Rental Solutions. All rights reserved.</p>
@@ -47,6 +46,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/assets/js/script.js"></script>
+
 <?php if (isset($include_maps)) : ?>
     <script src="/assets/js/google-maps.js"></script>
 <?php endif; ?>
@@ -61,3 +61,8 @@
 </script>
 </body>
 </html>
+<?php
+// Flush any output buffering started in auth.php
+if (function_exists('ob_get_level') && ob_get_level() > 0) {
+    @ob_end_flush();
+}
